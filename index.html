@@ -13,15 +13,17 @@
   <body>
     <div class="container-app">
       <div class="notification"></div>
+      <form id="search-city">
+        <input type="text" name="city" placeholder="type city" />
+        <button type="submit" class="checkBtn">Check</button>
+      </form>
       <div class="icon-weather">
         <img src="./images/unknown.gif" alt="Unknown image" />
       </div>
-      <div class="temperature"><h1>23</h1></div>
+      <div class="temperature"><h1></h1></div>
       <div class="localisation">
-        <h1>Berlin</h1>
-        <h3>
-          <span class="day">Monday</span>, <span class="time">10:23</span>
-        </h3>
+        <span class="city">-</span>
+        <div class="date-box"></div>
       </div>
     </div>
     <script src="./js/main.js"></script>
