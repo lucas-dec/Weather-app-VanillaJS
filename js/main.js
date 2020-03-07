@@ -1,4 +1,7 @@
 window.addEventListener("load", () => {
+  inputActive = false;
+  const btnShowInput = document.querySelector(".btn-show-input");
+  const form = document.getElementById("search-city");
   checkWeather = (lon, lat, city) => {
     const apiKey = "f0326d2bfb921fa77828c60ea653855b";
     let api = "";
@@ -15,7 +18,7 @@ window.addEventListener("load", () => {
         if (response.ok) {
           return response;
         }
-        throw Error("Something went wrong ! Try agine ...");
+        throw Error("Something went wrong ! </br> Try agine ...");
       })
       .then(response => response.json())
       .then(result => {
@@ -27,33 +30,44 @@ window.addEventListener("load", () => {
   notification = info => {
     const notificationBox = document.querySelector(".notification");
     notificationBox.classList.add("active");
-    notificationBox.textContent = info;
+    notificationBox.innerHTML = info;
   };
 
   showInput = () => {
-    const form = document.getElementById("search-city");
     form.classList.add("active");
-
+    inputActive = true;
     form.addEventListener("submit", e => {
       e.preventDefault();
       const city = e.target.city.value;
+      if (city === "" || city === " ") return;
       checkWeather(null, null, city);
       const notificationBox = document.querySelector(".notification");
       notificationBox.classList.remove("active");
-      e.target.city.value = "";
-      form.classList.remove("active");
+      closeInput();
     });
+  };
+
+  closeInput = () => {
+    form.reset();
+    form.classList.remove("active");
+    inputActive = false;
   };
 
   displayWeather = result => {
     const iconWeather = document.querySelector(".icon-weather");
+    const labelDescription = document.querySelector(".description");
     const temperature = document.querySelector(".temperature h1");
     const labelCity = document.querySelector("span.city");
+
     const city = result.name;
+    const description = result.weather[0].main;
+
     const temp = Math.floor(result.main.temp - 273);
     const icon = result.weather[0].icon;
 
-    temperature.textContent = temp;
+    iconWeather.innerHTML = `<img src="./images/${icon}.png" alt="Unknown image" />`;
+    labelDescription.textContent = description;
+    temperature.innerHTML = `${temp} &#8451`;
     labelCity.textContent = city;
   };
 
@@ -76,14 +90,14 @@ window.addEventListener("load", () => {
       checkWeather(lon, lat);
     }
     function showError(error) {
-      console.log(error);
       if (error.code === 1) {
         notification(
           error.message +
-            "Turn on allow geolocation setting of your browser or type manualy city :)"
+            "</br>Turn on allow geolocation setting of your browser or type manualy city :)"
         );
         showInput();
-      } else notification(error.message + "Please check connect to internet");
+      } else
+        notification(error.message + "</br>Please check connect to internet");
     }
 
     setDate = () => {
@@ -101,7 +115,7 @@ window.addEventListener("load", () => {
       ];
       const day = time.getDay();
       const hours = time.getHours();
-      const minute = time.getMinutes();
+      let minute = time.getMinutes();
       if (minute < 10) minute = "0" + minute;
 
       dateBox.innerHTML = `<span>${nameDays[day]}</span>, <span>${hours}:${minute}</span>`;
@@ -109,4 +123,9 @@ window.addEventListener("load", () => {
   }
   weatherGeolocation();
   setDate();
+
+  btnShowInput.addEventListener("click", () => {
+    if (inputActive) closeInput();
+    else showInput();
+  });
 });
