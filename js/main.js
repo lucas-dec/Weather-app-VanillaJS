@@ -2,7 +2,8 @@ window.addEventListener("load", () => {
   inputActive = false;
   const btnShowInput = document.querySelector(".btn-show-input");
   const form = document.querySelector(".search-city");
-  checkWeather = (lon, lat, city) => {
+
+  const checkWeather = (lon, lat, city) => {
     const apiKey = "f0326d2bfb921fa77828c60ea653855b";
     let api = "";
 
@@ -27,13 +28,13 @@ window.addEventListener("load", () => {
       .catch(err => notification(err));
   };
 
-  notification = info => {
+  const notification = info => {
     const notificationBox = document.querySelector(".notification");
     notificationBox.classList.add("active");
     notificationBox.innerHTML = info;
   };
 
-  showInput = () => {
+  const showInput = () => {
     form.classList.add("active");
     inputActive = true;
     form.addEventListener("submit", e => {
@@ -47,13 +48,13 @@ window.addEventListener("load", () => {
     });
   };
 
-  closeInput = () => {
+  const closeInput = () => {
     form.reset();
     form.classList.remove("active");
     inputActive = false;
   };
 
-  displayWeather = result => {
+  const displayWeather = result => {
     const iconWeather = document.querySelector(".icon-weather");
     const labelDescription = document.querySelector(".description");
     const temperature = document.querySelector(".temperature h1");
@@ -71,7 +72,24 @@ window.addEventListener("load", () => {
     labelCity.textContent = city;
   };
 
-  function weatherGeolocation() {
+  const position = position => {
+    const lon = position.coords.longitude;
+    const lat = position.coords.latitude;
+    checkWeather(lon, lat);
+  };
+
+  const showError = error => {
+    if (error.code === 1) {
+      notification(
+        error.message +
+          "</br>Turn on allow geolocation setting of your browser or type manualy city :)"
+      );
+      showInput();
+    } else
+      notification(error.message + "</br>Please check connect to internet");
+  };
+
+  const weatherGeolocation = () => {
     if (navigator.geolocation) {
       options = {
         enableHighAccuracy: true,
@@ -84,23 +102,7 @@ window.addEventListener("load", () => {
       notification("Your browser doesn't support Geolocation");
     }
 
-    function position(position) {
-      const lon = position.coords.longitude;
-      const lat = position.coords.latitude;
-      checkWeather(lon, lat);
-    }
-    function showError(error) {
-      if (error.code === 1) {
-        notification(
-          error.message +
-            "</br>Turn on allow geolocation setting of your browser or type manualy city :)"
-        );
-        showInput();
-      } else
-        notification(error.message + "</br>Please check connect to internet");
-    }
-
-    setDate = () => {
+    const setDate = () => {
       const dateBox = document.querySelector(".date-box");
       const time = new Date();
 
@@ -113,6 +115,7 @@ window.addEventListener("load", () => {
         "Friday",
         "Saturday"
       ];
+
       const day = time.getDay();
       const hours = time.getHours();
       let minute = time.getMinutes();
@@ -120,7 +123,8 @@ window.addEventListener("load", () => {
 
       dateBox.innerHTML = `<span>${nameDays[day]}</span>, <span>${hours}:${minute}</span>`;
     };
-  }
+  };
+
   weatherGeolocation();
   setDate();
 
