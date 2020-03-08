@@ -1,16 +1,16 @@
 window.addEventListener("load", () => {
   inputActive = false;
   const btnShowInput = document.querySelector(".btn-show-input");
-  const form = document.getElementById("search-city");
+  const form = document.querySelector(".search-city");
   checkWeather = (lon, lat, city) => {
     const apiKey = "f0326d2bfb921fa77828c60ea653855b";
     let api = "";
 
     if (lon && lat) {
-      api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+      api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     }
     if (city) {
-      api = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+      api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
     }
 
     fetch(api)
@@ -65,7 +65,7 @@ window.addEventListener("load", () => {
     const temp = Math.floor(result.main.temp - 273);
     const icon = result.weather[0].icon;
 
-    iconWeather.innerHTML = `<img src="./images/${icon}.png" alt="Unknown image" />`;
+    iconWeather.innerHTML = `<img src="./images/${icon}.svg" alt="Unknown image" />`;
     labelDescription.textContent = description;
     temperature.innerHTML = `${temp} &#8451`;
     labelCity.textContent = city;
