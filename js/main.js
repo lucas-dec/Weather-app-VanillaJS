@@ -89,6 +89,28 @@ window.addEventListener("load", () => {
       notification(error.message + "</br>Please check connect to internet");
   };
 
+  const setDate = () => {
+    const dateBox = document.querySelector(".date-box");
+    const time = new Date();
+
+    const nameDays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
+
+    const day = time.getDay();
+    const hours = time.getHours();
+    let minute = time.getMinutes();
+    if (minute < 10) minute = "0" + minute;
+
+    dateBox.innerHTML = `<span>${nameDays[day]}</span>, <span>${hours}:${minute}</span>`;
+  };
+
   const weatherGeolocation = () => {
     if (navigator.geolocation) {
       options = {
@@ -102,31 +124,10 @@ window.addEventListener("load", () => {
       notification("Your browser doesn't support Geolocation");
     }
 
-    const setDate = () => {
-      const dateBox = document.querySelector(".date-box");
-      const time = new Date();
-
-      const nameDays = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ];
-
-      const day = time.getDay();
-      const hours = time.getHours();
-      let minute = time.getMinutes();
-      if (minute < 10) minute = "0" + minute;
-
-      dateBox.innerHTML = `<span>${nameDays[day]}</span>, <span>${hours}:${minute}</span>`;
-    };
+    setDate();
   };
 
   weatherGeolocation();
-  setDate();
 
   btnShowInput.addEventListener("click", () => {
     if (inputActive) closeInput();

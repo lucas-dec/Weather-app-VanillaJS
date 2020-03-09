@@ -16,7 +16,6 @@ https://lucas-dec.github.io/Weather-app-VanillaJS/
 ### Technologies used on this project:
 
 - HTML/CSS
-- RWD
 - JS (fetch method)
 - Geolocation API
 - API - OpenWeather (https://openweathermap.org)
